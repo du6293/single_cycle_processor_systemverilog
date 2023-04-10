@@ -1,3 +1,5 @@
+
+
 `timescale 1ns/1ps
 `define FF 1
 module single_cycle_cpu
@@ -30,13 +32,15 @@ module single_cycle_cpu
     logic           [DMEM_ADDR_WIDTH-1:0]       dmem_addr               ;
     logic           [31:0]                      dmem_din, dmem_dout     ;
     logic                                       mem_read, mem_write     ;
-      logic           [6:0]                       opcode                ;
+    /* Main control unit */
+    logic           [6:0]                       opcode                  ;
     logic           [5:0]                       branch                  ;
     logic                                       alu_src, mem_to_reg     ;
     logic           [1:0]                       alu_op                  ;
     logic           [2:0]                       funct3                  ;
     logic           [6:0]                       funct7                  ;
   
+    
     assign              opcode = inst[6:0]                              ; 
     assign              branch[0] = ( opcode == 7'b1100011 && funct3 == 3'b000 ) ? 1'b1 : 1'b0          ;       // BEQ
     assign              branch[1] = ( opcode == 7'b1100011 && funct3 == 3'b001 ) ? 1'b1 : 1'b0          ;       // BNE
@@ -45,25 +49,24 @@ module single_cycle_cpu
     assign              branch[4] = ( opcode == 7'b1100011 && funct3 == 3'b110 ) ? 1'b1 : 1'b0          ;       // BLTU
     assign              branch[5] = ( opcode == 7'b1100011 && funct3 == 3'b111 ) ? 1'b1 : 1'b0          ;       // BGEU
 
-
+    /*main control unit*/
     assign              mem_read   = ( opcode == 7'b0000011 )  ? 1'b1 : 1'b0                    ;    // load
     assign              mem_write  = ( opcode == 7'b0100011 )  ? 1'b1 : 1'b0                    ;    // store
     assign              mem_to_reg = ( opcode == 7'b0000011 )  ? 1'b1 : 1'b0                    ;    // load
-  
+   
     assign              reg_write  = ( opcode == 7'b0000011 || opcode == 7'b0110011 || opcode == 7'b0010011|| opcode == 7'b1100011||opcode==7'b1100111||opcode==7'b1100111||opcode==7'b01    10111||opcode==7'b0010111) ? 1: 0;
     assign              alu_src = (opcode == 7'b0000011||opcode==7'b0100011||opcode==7'b0010011||opcode==7'b1100111||opcode==7'b1101111||opcode==7'b0110111||opcode==7'b0010111) ? 1:0;
-        assign              funct3 = (opcode == 7'b0110111 || opcode == 7'b0010111) ? 3'b0 : inst[14:12]        ;
+    assign              funct3 = (opcode == 7'b0110111 || opcode == 7'b0010111) ? 3'b0 : inst[14:12]        ;
     assign              funct7 = (opcode == 7'b0110011) ? inst[31:25] : 7'b0                                ;
 
   
     always_comb begin
-        if (opcode == 7'b0000011 || opcode == 7'b0100011) alu_op = 2'b00        ; // load, store
+        if      (opcode == 7'b0000011 || opcode == 7'b0100011) alu_op = 2'b00        ; // load, store
         else if (opcode == 7'b1100011) alu_op = 2'b01           ;   // sb-type
         else if (opcode == 7'b0110011) alu_op = 2'b10           ;   // r-type
         else if (opcode == 7'b0010011) alu_op = 2'b10           ;   // i-type
         else if (opcode == 7'b0110111) alu_op = 2'b11           ;   // lui
-        else  alu_op = 2'b00            ;                           // auipc,jal,jalr
-
+        else                           alu_op = 2'b00           ;   // auipc,jal,jalr
     end
 
     always_comb begin
@@ -83,6 +86,7 @@ module single_cycle_cpu
                 else if (funct3 == 3'b111) alu_control = 4'b0000;//and, andi
                 else if (funct3 == 3'b010) alu_control = 4'b1000;//slt, slti
                 else if (funct3 == 3'b011) alu_control = 4'b1001;//sltu, sltiu
+              else  alu_control = 4'b0100     ;
         end
     end
     logic       [REG_WIDTH-1:0]         imm32                           ;  // 32 bit
@@ -171,7 +175,7 @@ module single_cycle_cpu
     assign       pc_next = (pc_next_sel) ? pc_next_branch : pc_next_plus4                ; // if branch is taken, pc_next_sel == 1'b1
   
     assign  alu_in1 = (opcode == 7'b0010111 || opcode == 7'b1101111) ? pc_curr : (opcode == 7'b0110111) ? 32'b0 : rs1_dout;
-    assign alu_in2 = (alu_src == 1'b0) ? rs2_dout : (alu_src == 1'b1 && opcode != 7'b0010111) ? imm32 : ( imm32 << 1)    ;
+    assign  alu_in2 = (alu_src == 1'b0) ? rs2_dout : (alu_src == 1'b1 && opcode != 7'b0010111) ? imm32 : ( imm32 << 1)    ;
   
   
     always_comb begin
