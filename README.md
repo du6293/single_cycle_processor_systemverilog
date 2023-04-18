@@ -6,7 +6,7 @@ I needed basic knowledge of processor architecture and hardware design.
 
 I referenced "COMPUTER ORGANIAZATION AND DESIGN RISC-V EDITION"
 
-I focused on decoding all command combinations in the risc-v instruction set.(except for sync and system call)
+I focused on decoding all command combinations in the risc-v instruction set. (except for sync and system call)
 
 Verilator was used for design verification.
 
