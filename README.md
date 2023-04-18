@@ -1,4 +1,4 @@
-# single_cycle_processor_verilog
+# single_cycle_processor_system verilog
 
 
 
