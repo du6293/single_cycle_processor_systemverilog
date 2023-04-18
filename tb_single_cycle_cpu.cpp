@@ -38,9 +38,7 @@ int main(int argc, char** argv, char** env) {
 
         dut->eval();
         m_trace->dump(tick);
-//        printf("***********************************************************************\n");
-//      printf("                           RISCV_SIMULATOR                             \n");
-//      printf("***********************************************************************\n");
+
         for (int i = 0; i < 32; i++) {
                 fprintf(fp, "RF[%02d]: %08X \n", i, dut->rootp->single_cycle_cpu__DOT__u_regfile_0__DOT__rf_data[i]);
         }
