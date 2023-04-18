@@ -1,10 +1,9 @@
-/********************************************/
-
-Module: top design of the single-cycle CPU (single_cycle_cpu.sv)
-- Top design of the single-cycle CPU
-
-/********************************************/
-
+/********************************************
+*
+*Module: top design of the single-cycle CPU (single_cycle_cpu.sv)
+*- Top design of the single-cycle CPU
+*
+********************************************/
 
 `timescale 1ns/1ps
 `define FF 1
@@ -15,7 +14,7 @@ module single_cycle_cpu
                 DMEM_DEPTH      = 1024  ,           // dmem depth (default: 1024 entries = 8 KB)
                 DMEM_ADDR_WIDTH = 10 )
 (
-    input           clk                  ,          // System clock
+    input           clk                 ,          // System clock
     input           reset_b                         // Asychronous negative reset
 );
 
