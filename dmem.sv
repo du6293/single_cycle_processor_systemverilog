@@ -39,7 +39,7 @@ module dmem
     assign dout = (mem_read == 1'b1) ? data[addr] : 'b0         ;
   
     initial begin
-        $readmemh("dmem.mem", data);
+        $readmemh("dmem.mem", data)                             ;
     end
 
 
