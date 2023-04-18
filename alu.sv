@@ -1,3 +1,13 @@
+/* ********************************************
+ *     
+ *      Module: ALU (alu.sv)
+ *  - 64-bit 2 input and 1 output ports
+ *
+ * ********************************************
+ */
+
+
+
 `timescale 1ns/1ps
 `define FF 1
 
@@ -15,20 +25,21 @@ module alu
 
         always_comb begin
                 case (alu_control)
-                        4'b0000: result = in1 & in2         ; // and
-                        4'b0001: result = in1 | in2         ; // or
-                        4'b0010: result = $signed(in1) + $signed(in2)         ; // add
-                        4'b0011: result = in1 ^ in2         ; // xor
-                        4'b0100: result = in1 << in2        ; // sll, slli, unsigned left shift
-                        4'b0101: result = in1 >> in2        ; // srl, srli unsigned right shift
-                        4'b0110: result = $signed(in1) >> $signed(in2)      ; // sra, srai signed shift
-                        4'b0111: result = $signed(in1) - $signed(in2)         ; // sub
-                        4'b1000: result = ($signed(in1) < $signed(in2)) ? 32'b1 : 32'b0;  // slt, slti signed
-                        4'b1001: result = ($unsigned(in1) < $unsigned(in2)) ? 32'b1 : 32'b0;  // sltu, sltiu unsigned
-                        4'b1010: result = in1 | in2         ;    // lui
-                        default: result = in1 + in2         ;    // default = add
+                        4'b0000: result = in1 & in2                                         ; // and
+                        4'b0001: result = in1 | in2                                         ; // or
+                        4'b0010: result = $signed(in1) + $signed(in2)                       ; // add
+                        4'b0011: result = in1 ^ in2                                         ; // xor
+                        4'b0100: result = in1 << in2                                        ; // sll, slli, unsigned left shift
+                        4'b0101: result = in1 >> in2                                        ; // srl, srli unsigned right shift
+                        4'b0110: result = $signed(in1) >> $signed(in2)                      ; // sra, srai signed shift
+                        4'b0111: result = $signed(in1) - $signed(in2)                       ; // sub
+                        4'b1000: result = ($signed(in1) < $signed(in2)) ? 32'b1 : 32'b0     ; // slt, slti signed
+                        4'b1001: result = ($unsigned(in1) < $unsigned(in2)) ? 32'b1 : 32'b0 ; // sltu, sltiu unsigned
+                        4'b1010: result = in1 | in2                                         ; // lui
+                        default: result = in1 + in2                                         ; // default = add
                    endcase
         end
+    
     assign zero = ( result == 'b0 ) ? 1'b1 : 1'b0               ;
     assign sign = result[31]                                    ;
 
