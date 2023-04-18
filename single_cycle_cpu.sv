@@ -1,7 +1,10 @@
-/* ********************************************
+/********************************************/
+
 Module: top design of the single-cycle CPU (single_cycle_cpu.sv)
 - Top design of the single-cycle CPU
-/* ********************************************
+
+/********************************************/
+
 
 `timescale 1ns/1ps
 `define FF 1
