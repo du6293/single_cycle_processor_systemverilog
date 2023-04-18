@@ -4,6 +4,8 @@
 
 I needed basic knowledge of processor architecture and hardware design.
 
+It was based on the professor's guidelines and his skeleton code.
+
 I referenced "COMPUTER ORGANIAZATION AND DESIGN RISC-V EDITION"
 
 I focused on decoding all command combinations in the risc-v instruction set. (except for sync and system call)
