@@ -1,3 +1,14 @@
+/* ********************************************
+ *
+ *      Module: data memory (dmem.sv)
+ *      - 1 address input port
+ *      - 32-bit 1 data input and output ports
+ *      - A single entry size is 64-bit
+ *
+ * ********************************************
+ */
+
+
 `timescale 1ns/1ps
 `define FF 1
 module dmem
@@ -37,8 +48,8 @@ module dmem
     // Read operation:
     // - dout = 0 if (mem_read==0)
     assign dout = (mem_read == 1'b1) ? data[addr] : 'b0        ;
+  
 // synthesis translate_off
-
     initial begin
         $readmemh("dmem.mem", data);
     end
